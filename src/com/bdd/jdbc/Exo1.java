@@ -17,7 +17,7 @@ public class Exo1 {
 			 String login = props.getProperty("jdbc.login");
 			 String password = props.getProperty("jdbc.password");
 			 
-		     ExoJDBC Exo = new ExoJDBC();
+		     ExoJDBC_MAIN Exo = new ExoJDBC_MAIN();
 		     Exo.exo1(url, login, password);
 		     
 		     
