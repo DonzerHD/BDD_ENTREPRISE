@@ -1,11 +1,12 @@
-package com.bdd.jdbc;
+package Exercice1a8;
 
 import java.io.FileInputStream;
 import java.util.Properties;
 
-public class Exo2 {
+public class Exo3 {
+
 	public static void main(String[] args) throws Exception{
-	      Properties props = new Properties();
+		Properties props = new Properties();
 	      try (FileInputStream fis = new FileInputStream("conf.properties")){
 	    	  props.load(fis);
 	      }
@@ -17,10 +18,9 @@ public class Exo2 {
 			 String password = props.getProperty("jdbc.password");
 			 
 		     ExoJDBC_MAIN Exo = new ExoJDBC_MAIN();
-		     Exo.exo2(url, login, password);
+		     Exo.exo3(url, login, password);
 		     
-		     
-			 
-		}
+
+	}
 
 }

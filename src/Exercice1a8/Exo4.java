@@ -1,4 +1,4 @@
-package com.bdd.jdbc;
+package Exercice1a8;
 
 import java.io.FileInputStream;
 import java.util.Properties;
