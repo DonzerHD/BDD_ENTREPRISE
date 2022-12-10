@@ -3,7 +3,7 @@ package Exercice9;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLTimeoutException;
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -18,7 +18,7 @@ import java.util.Scanner;
  */
 public class Main {
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, SQLTimeoutException {
+	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, SQLException {
 
 		// FICHIER PROPERTIES
 		@SuppressWarnings("resource")
@@ -51,6 +51,8 @@ public class Main {
 				retourMenu();
 				break;
 			case 3:
+				entreprise.ajouterUnEmploye(url, login, password);
+				retourMenu();
 				break;
 			case 4:
 				break;
@@ -64,6 +66,7 @@ public class Main {
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("Rentrez un chiffre entre 1 et 5 !");
+			retourMenu();
 			main(null);
 		}
 
@@ -92,9 +95,9 @@ public class Main {
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 * @throws FileNotFoundException 
-	 * @throws SQLTimeoutException 
+	 * @throws SQLException 
 	 */
-	public static void retourMenu() throws SQLTimeoutException, FileNotFoundException, ClassNotFoundException, IOException {
+	public static void retourMenu() throws FileNotFoundException, ClassNotFoundException, IOException, SQLException {
 		try {
 			System.out.println("----------------------------------------------");
 			System.out.println("Retour dans le menu dans quelques secondes ...");
