@@ -56,6 +56,8 @@ public class Main {
 				retourMenu();
 				break;
 			case 4:
+				entreprise.modifierUnEmploye(url, login, password);
+				retourMenu();
 				break;
 			case 5:
 				entreprise.supprimerUnEmploye(url, login, password);

@@ -13,6 +13,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.postgresql.util.PSQLException;
@@ -206,17 +207,26 @@ public class Entreprise extends Main {
 
 	}
 
+	/**
+	 * Méthode qui va permettre de supprimer un employé dans la base de données
+	 * 
+	 * @param url
+	 * @param login
+	 * @param password
+	 * @throws SQLTimeoutException
+	 */
 	public void supprimerUnEmploye(final String url, final String login, final String password)
 			throws SQLTimeoutException {
-		 Scanner sc = new Scanner(System.in);
-		 boolean donneesExiste = false;
-         System.out.println("Le nom de l'employé que vous voulez supprimer : ");
-         String nom = sc.nextLine();
-         System.out.println("Le prénom de l'employé que vous voulez supprimer : ");
-         String prenom = sc.nextLine();
+		Scanner sc = new Scanner(System.in);
+		boolean donneesExiste = false;
+		System.out.print("Le nom de l'employé que vous voulez supprimer : ");
+		String nom = sc.nextLine();
+		System.out.print("Le prénom de l'employé que vous voulez supprimer : ");
+		String prenom = sc.nextLine();
 		try (Connection connection = DriverManager.getConnection(url, login, password)) {
-			String delete = "DELETE FROM entreprise.emp WHERE nom = '" + nom  + "' AND prenom = '" + prenom + "';";
-			String select = "SELECT nom,prenom FROM entreprise.emp WHERE nom = UPPER('" + nom + "') AND prenom = UPPER('" + prenom + "')";
+			String delete = "DELETE FROM entreprise.emp WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
+			String select = "SELECT nom,prenom FROM entreprise.emp WHERE nom = UPPER('" + nom
+					+ "') AND prenom = UPPER('" + prenom + "')";
 			try (Statement statement = connection.createStatement()) {
 				ResultSet resulSet = statement.executeQuery(select);
 				while (resulSet.next()) {
@@ -226,19 +236,107 @@ public class Entreprise extends Main {
 						donneesExiste = true;
 						statement.executeUpdate(delete);
 						System.out.println("L'employé a bien été supprimé");
-						}
-				} if(donneesExiste == false){
+					}
+				}
+				if (donneesExiste == false) {
 					System.out.println("----------ERREUR------------------------------");
 					System.out.println(" Ce prénom ou nom ne correspond à aucun employé.");
 					System.out.println("----------ERREUR------------------------------");
 				}
-				
 
-			connection.close();
+				connection.close();
 
 			}
 		} catch (SQLException e1) {
 			System.out.println("Connexion non établie");
+		}
+
+	}
+
+	/**
+	 * Méthode qui va permettre à l'utilisateur de modifier les informations d'un employé
+	 * @param url
+	 * @param login
+	 * @param password
+	 * @throws SQLTimeoutException
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public void modifierUnEmploye(final String url, final String login, final String password)
+			throws SQLTimeoutException, FileNotFoundException, ClassNotFoundException, IOException {
+		Scanner sc = new Scanner(System.in);
+		ModifierEmploye modif = new ModifierEmploye();
+		boolean donneesExiste = false;
+		System.out.print("Le nom de l'employé que vous voulez modifier : ");
+		String nom = sc.nextLine();
+		System.out.print("Le prénom de l'employé que vous voulez modifier : ");
+		String prenom = sc.nextLine();
+		try (Connection connection = DriverManager.getConnection(url, login, password)) {
+			String select = "SELECT nom,prenom FROM entreprise.emp WHERE nom = UPPER('" + nom
+					+ "') AND prenom = UPPER('" + prenom + "')";
+			try (Statement statement = connection.createStatement()) {
+				ResultSet resulSet = statement.executeQuery(select);
+				while (resulSet.next()) {
+					String nomR = resulSet.getString(1);
+					String prenomR = resulSet.getString(2);
+					if (nomR.equalsIgnoreCase(nom) && prenomR.equalsIgnoreCase(prenom)) {
+						donneesExiste = true;
+					}
+				}
+				if (donneesExiste == false) {
+					System.out.println("----------ERREUR------------------------------");
+					System.out.println(" Ce prénom ou nom ne correspond à aucun employé.");
+					System.out.println("----------ERREUR------------------------------");
+					retourMenu();
+					main(null);
+				}
+				modif.menu();
+				int choix = sc.nextInt();
+				switch (choix) {
+
+				case 1:
+
+					break;
+				case 2:
+					String changeNom = modif.modifierNomPrenomEmploi(nom, prenom, "nom");
+					statement.executeUpdate(changeNom);
+					break;
+				case 3:
+					String changePrenom = modif.modifierNomPrenomEmploi(nom, prenom, "prenom");
+					statement.executeUpdate(changePrenom);
+					break;
+				case 4:
+					String changeEmploi = modif.modifierNomPrenomEmploi(nom, prenom, "emploi");
+					statement.executeUpdate(changeEmploi);
+					break;
+				case 5:
+
+					break;
+				case 6:
+
+					break;
+				case 7:
+
+					break;
+				case 8:
+
+					break;
+				case 9:
+
+					break;
+
+				default:
+					System.out.println("Ne correspond à aucune option");
+				}
+
+				connection.close();
+
+			}
+		} catch (SQLException e1) {
+			System.out.println("Connexion non établie");
+		} catch (InputMismatchException e) {
+			System.out.println("Rentrez un chiffre entre 1 et 9 !");
 		}
 
 	}
