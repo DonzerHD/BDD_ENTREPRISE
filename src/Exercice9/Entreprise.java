@@ -340,7 +340,7 @@ public class Entreprise extends Main {
 
 			}
 		} catch (SQLException e1) {
-			System.out.println("Connexion non établie");
+			System.out.println("Saisie invalide et Connexion non établie");
 		} catch (InputMismatchException e) {
 			System.out.println("Mauvaise saisie !");
 		}catch(DateTimeParseException e){

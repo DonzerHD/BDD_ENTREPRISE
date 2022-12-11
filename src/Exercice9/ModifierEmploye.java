@@ -88,6 +88,13 @@ public class ModifierEmploye {
       	   
          }
         
+        /**
+         * Méthode qui change le salaire d'un employé
+         * @param nom
+         * @param prenom
+         * @param up
+         * @return
+         */
         public String modifierSalaire(final String nom , final String prenom, final String up){
       	   Scanner sc = new Scanner(System.in);
       	   System.out.print("Modification " + up + " :" );
