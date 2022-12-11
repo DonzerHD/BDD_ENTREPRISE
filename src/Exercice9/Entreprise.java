@@ -9,11 +9,9 @@ import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -60,7 +58,6 @@ public class Entreprise extends Main {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println("Connexion non établie");
 		}
 
@@ -164,8 +161,7 @@ public class Entreprise extends Main {
 			System.out.print("Embauche (date : AAAA-MM-JJ ) : ");
 			String date = sc.nextLine();
 			if (date.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
-				LocalDate dateN = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-				System.out.println(dateN);
+				LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
 			} else {
 				System.out.println("--------ERREUR---------------------------------------------");
 				System.out.println("La date saisie est invalide");
@@ -209,4 +205,42 @@ public class Entreprise extends Main {
 		}
 
 	}
+
+	public void supprimerUnEmploye(final String url, final String login, final String password)
+			throws SQLTimeoutException {
+		 Scanner sc = new Scanner(System.in);
+		 boolean donneesExiste = false;
+         System.out.println("Le nom de l'employé que vous voulez supprimer : ");
+         String nom = sc.nextLine();
+         System.out.println("Le prénom de l'employé que vous voulez supprimer : ");
+         String prenom = sc.nextLine();
+		try (Connection connection = DriverManager.getConnection(url, login, password)) {
+			String delete = "DELETE FROM entreprise.emp WHERE nom = '" + nom  + "' AND prenom = '" + prenom + "';";
+			String select = "SELECT nom,prenom FROM entreprise.emp WHERE nom = UPPER('" + nom + "') AND prenom = UPPER('" + prenom + "')";
+			try (Statement statement = connection.createStatement()) {
+				ResultSet resulSet = statement.executeQuery(select);
+				while (resulSet.next()) {
+					String nomR = resulSet.getString(1);
+					String prenomR = resulSet.getString(2);
+					if (nomR.equalsIgnoreCase(nom) && prenomR.equalsIgnoreCase(prenom)) {
+						donneesExiste = true;
+						statement.executeUpdate(delete);
+						System.out.println("L'employé a bien été supprimé");
+						}
+				} if(donneesExiste == false){
+					System.out.println("----------ERREUR------------------------------");
+					System.out.println(" Ce prénom ou nom ne correspond à aucun employé.");
+					System.out.println("----------ERREUR------------------------------");
+				}
+				
+
+			connection.close();
+
+			}
+		} catch (SQLException e1) {
+			System.out.println("Connexion non établie");
+		}
+
+	}
+
 }

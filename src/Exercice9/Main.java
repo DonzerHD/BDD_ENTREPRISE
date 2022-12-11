@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -57,17 +58,22 @@ public class Main {
 			case 4:
 				break;
 			case 5:
+				entreprise.supprimerUnEmploye(url, login, password);
+				retourMenu();
 				break;
 			case 6:
+				System.exit(0);
 				break;
 			default:
 				System.out.println("Ne correspond à aucune option");
 				main(null);
 			}
 		} catch (InputMismatchException e) {
-			System.out.println("Rentrez un chiffre entre 1 et 5 !");
+			System.out.println("Rentrez un chiffre entre 1 et 6 !");
 			retourMenu();
 			main(null);
+		}catch (NoSuchElementException e) {
+			System.exit(0);
 		}
 
 	}
