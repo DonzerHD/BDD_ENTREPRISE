@@ -3,7 +3,7 @@ package Exercice9;
 import java.util.Scanner;
 
 /**
- * Méthode qui va permettre de changer des informations de l'employé dans la base de données
+ * class qui va permettre de changer des informations de l'employé dans la base de données
  * @author thomas59
  *
  */
@@ -44,4 +44,38 @@ public class ModifierEmploye {
         	   return change;
         	   
            }
+        
+        /**
+         * Méthode qui va permettre de changer le Noemp, Sup , Comm, Noserv d'un employé
+         * @param nom
+         * @param prenom
+         * @param up
+         * @return
+         */
+        public String modifierNoempSupCommNoserv(final String nom , final String prenom, final String up){
+     	   Scanner sc = new Scanner(System.in);
+     	   System.out.println("Modification " + up + " :" );
+     	   int changeInt = sc.nextInt();
+     	   String change ="UPDATE entreprise.emp\n"
+     	   		+ "SET " + up + " = " + changeInt + " WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
+     	   return change;
+     	   
+        }
+        
+        /**
+         * Méthode qui va permettre de modifier la date d'embauche d'un employé
+         * @param nom
+         * @param prenom
+         * @param up
+         * @return
+         */
+        public String modifierDateEmbauche(final String nom , final String prenom, final String up){
+      	   Scanner sc = new Scanner(System.in);
+      	   System.out.println("Modification " + up + " :" );
+      	   int changeInt = sc.nextInt();
+      	   String change ="UPDATE entreprise.emp\n"
+      	   		+ "SET " + up + " = " + changeInt + " WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
+      	   return change;
+      	   
+         }
 }

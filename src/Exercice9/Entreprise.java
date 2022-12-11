@@ -13,7 +13,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.postgresql.util.PSQLException;
@@ -296,7 +295,8 @@ public class Entreprise extends Main {
 				switch (choix) {
 
 				case 1:
-
+                    String changeNoemp = modif.modifierNoempSupCommNoserv(nom, prenom, "noemp");
+                    statement.executeUpdate(changeNoemp);
 					break;
 				case 2:
 					String changeNom = modif.modifierNomPrenomEmploi(nom, prenom, "nom");
@@ -311,7 +311,8 @@ public class Entreprise extends Main {
 					statement.executeUpdate(changeEmploi);
 					break;
 				case 5:
-
+					String changeSup = modif.modifierNoempSupCommNoserv(nom, prenom, "sup");
+                    statement.executeUpdate(changeSup);
 					break;
 				case 6:
 
@@ -320,10 +321,12 @@ public class Entreprise extends Main {
 
 					break;
 				case 8:
-
+					String changeComm = modif.modifierNoempSupCommNoserv(nom, prenom, "comm");
+                    statement.executeUpdate(changeComm);
 					break;
 				case 9:
-
+					String changeNoserv = modif.modifierNoempSupCommNoserv(nom, prenom, "noserv");
+                    statement.executeUpdate(changeNoserv);
 					break;
 
 				default:
