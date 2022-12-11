@@ -1,11 +1,17 @@
 package Exercice3a8PS;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -24,9 +30,11 @@ public class ExoJDBC_MAIN {
 	 */
 	public void exo3(String url, String login, String password) throws SQLTimeoutException {
 		try (Connection connection = DriverManager.getConnection(url, login, password)) {
-            String select = "SELECT * FROM entreprise.emp WHERE noserv = 5";
-            try(Statement statement = connection.createStatement()){
-             	ResultSet resulSet = statement.executeQuery(select);
+            String select = "SELECT * FROM entreprise.emp WHERE noserv = ?";
+            
+            try( PreparedStatement myStmt = connection.prepareStatement(select);){
+                myStmt.setInt(1, 5);
+             	ResultSet resulSet = myStmt.executeQuery();
             	 while(resulSet.next()) {
             		 int noemp 	= resulSet.getInt(1);
             		 String nom = resulSet.getString(2);
@@ -70,9 +78,10 @@ public class ExoJDBC_MAIN {
 	 */
 	public void exo4(String url, String login, String password) throws SQLTimeoutException {
 		try (Connection connection = DriverManager.getConnection(url, login, password)) {
-			String select = "SELECT noemp,nom,prenom,emploi,sup,embauche,sal,comm,service  FROM entreprise.emp NATURAL JOIN entreprise.serv WHERE service = 'INFORMATIQUE';";
-			try (Statement statement = connection.createStatement()) {
-				ResultSet resulSet = statement.executeQuery(select);
+			String select = "SELECT noemp,nom,prenom,emploi,sup,embauche,sal,comm,service  FROM entreprise.emp NATURAL JOIN entreprise.serv WHERE service = ?;";
+			  try( PreparedStatement myStmt = connection.prepareStatement(select);){
+	                myStmt.setString(1, "INFORMATIQUE");
+	             	ResultSet resulSet = myStmt.executeQuery();
 				while (resulSet.next()) {
 					int noemp = resulSet.getInt(1);
 					String nom = resulSet.getString(2);
@@ -119,10 +128,11 @@ public class ExoJDBC_MAIN {
 			Scanner sc = new Scanner(System.in);
 			System.out.print("Nom saisi par l’utilisateur : ");
 			String nomSaisi = sc.nextLine();
-			String select = "SELECT *  FROM entreprise.emp  WHERE nom = '"+ nomSaisi + "'";
+			String select = "SELECT *  FROM entreprise.emp  WHERE nom = ?";
 			
-			try (Statement statement = connection.createStatement()) {
-				ResultSet resulSet = statement.executeQuery(select);
+			  try( PreparedStatement myStmt = connection.prepareStatement(select);){
+	                myStmt.setString(1, nomSaisi);
+	             	ResultSet resulSet = myStmt.executeQuery();
 				while (resulSet.next()) {
 					int noemp = resulSet.getInt(1);
 					String nom = resulSet.getString(2);
@@ -164,17 +174,21 @@ public class ExoJDBC_MAIN {
 	 * @param login
 	 * @param password
 	 * @throws SQLTimeoutException
+	 * @throws ParseException 
 	 */
-	public void exo6(String url, String login, String password) throws SQLTimeoutException {
+	public void exo6(String url, String login, String password) throws SQLTimeoutException, ParseException {
 		try (Connection connection = DriverManager.getConnection(url, login, password)) {
 			Scanner sc = new Scanner(System.in);
 			System.out.print("Année saisi par l’utilisateur : ");
 			String annee = sc.nextLine();
-			System.out.println(annee);
-			String select = "SELECT *  FROM entreprise.emp WHERE embauche > '" + annee + "-01-01'  AND embauche < '" + annee + "-12-31'";
-			
-			try (Statement statement = connection.createStatement()) {
-				ResultSet resulSet = statement.executeQuery(select);
+			String anneeD = annee + "-01-01";
+			String anneeE = annee + "-12-31";
+			          
+			String select = "SELECT *  FROM entreprise.emp WHERE embauche > ?  AND embauche < ?";
+			  try( PreparedStatement myStmt = connection.prepareStatement(select);){
+	                myStmt.setDate(1, Date.valueOf(anneeD));
+	                myStmt.setDate(2, Date.valueOf(anneeE) );
+	             	ResultSet resulSet = myStmt.executeQuery();
 				while (resulSet.next()) {
 					int noemp = resulSet.getInt(1);
 					String nom = resulSet.getString(2);
@@ -224,10 +238,11 @@ public class ExoJDBC_MAIN {
 			String chaine = sc.nextLine();
 			String select = "SELECT *\n"
 					+ "FROM entreprise.emp\n"
-					+ "WHERE nom LIKE '%"+ chaine + "%'";
+					+ "WHERE nom LIKE ?";
 			
-			try (Statement statement = connection.createStatement()) {
-				ResultSet resulSet = statement.executeQuery(select);
+			try( PreparedStatement myStmt = connection.prepareStatement(select);){
+                myStmt.setString(1,"%" + chaine + "%");
+             	ResultSet resulSet = myStmt.executeQuery();
 				while (resulSet.next()) {
 					int noemp = resulSet.getInt(1);
 					String nom = resulSet.getString(2);
@@ -284,11 +299,13 @@ public class ExoJDBC_MAIN {
 					+ "FROM\n"
 					+ "	entreprise.emp\n"
 					+ "WHERE\n"
-					+ "	sal > " + salaire + "\n"
-					+ "	AND noserv = " + numero ;
+					+ "	sal > ? \n"
+					+ "	AND noserv = ? " ;
 			
-			try (Statement statement = connection.createStatement()) {
-				ResultSet resulSet = statement.executeQuery(select);
+			try( PreparedStatement myStmt = connection.prepareStatement(select);){
+                myStmt.setInt(2, numero);
+                myStmt.setDouble(1, salaire );
+             	ResultSet resulSet = myStmt.executeQuery();
 				while (resulSet.next()) {
 					String nom = resulSet.getString(1);
 					String emploi = resulSet.getString(2);
