@@ -3,7 +3,9 @@ package Exercice9PS;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
@@ -83,10 +85,11 @@ public class Entreprise extends Main {
 			String nomSaisie = sc.nextLine();
 			System.out.print("Saisissez le prénom de l'employé : ");
 			String prenomSaisie = sc.nextLine();
-			String select = "SELECT * FROM entreprise.emp WHERE nom = UPPER('" + nomSaisie + "') AND prenom = UPPER('"
-					+ prenomSaisie + "')";
-			try (Statement statement = connection.createStatement()) {
-				ResultSet resulSet = statement.executeQuery(select);
+			String select = "SELECT * FROM entreprise.emp WHERE nom = UPPER(?) AND prenom = UPPER(?)";
+			try( PreparedStatement myStmt = connection.prepareStatement(select);){
+                myStmt.setString(1, nomSaisie);
+                myStmt.setString(2, prenomSaisie);
+             	ResultSet resulSet = myStmt.executeQuery();
 				while (resulSet.next()) {
 					int noemp = resulSet.getInt(1);
 					String nom = resulSet.getString(2);
@@ -176,12 +179,18 @@ public class Entreprise extends Main {
 			int com = sc.nextInt();
 			System.out.print("Service numéro : ");
 			int noserv = sc.nextInt();
-			String insert = "INSERT\n" + "	INTO\n" + "	entreprise.emp (noemp,\n" + "	nom,\n" + "	prenom,\n"
-					+ "	emploi,\n" + "	sup,\n" + "	embauche,\n" + "	sal,\n" + "	comm,\n" + "	noserv )\n"
-					+ "VALUES ( " + noemp + ",\n" + "'" + nom + "',\n" + "'" + prenom + "',\n" + "'" + emploi + "',\n"
-					+ sup + ",\n" + "'" + date + "',\n" + sal + ",\n" + com + ",\n" + noserv + " )";
-			try (Statement statement = connection.createStatement()) {
-				statement.executeUpdate(insert);
+			String insert = "INSERT\n" + "	INTO\n" + "	entreprise.emp values(?,?,?,?,?,?,?,?,?)";
+			try( PreparedStatement myStmt = connection.prepareStatement(insert);){
+                myStmt.setInt(1, noemp);
+                myStmt.setString(2, nom.toUpperCase());
+                myStmt.setString(3, prenom.toUpperCase());
+                myStmt.setString(4, emploi.toUpperCase());
+                myStmt.setInt(5, sup);
+                myStmt.setDate(6, Date.valueOf(date));
+                myStmt.setDouble(7, sal);
+                myStmt.setInt(8, com);
+                myStmt.setInt(9, noserv);
+				myStmt.executeUpdate();
 				System.out.println("---------------------------------------------------------");
 				System.out.println("Employé à bien été ajouter dans la base de données");
 				System.out.println("---------------------------------------------------------");
@@ -190,6 +199,7 @@ public class Entreprise extends Main {
 			}
 
 		} catch (PSQLException e1) {
+			e1.printStackTrace();
 			System.out.println("----------------ERREUR------------------------------------------");
 			System.out.println(" Un ou plusieurs champs en dehors des limites ou emp déjà existant !");
 			System.out.println("----------------ERREUR------------------------------------------");
@@ -225,8 +235,8 @@ public class Entreprise extends Main {
 		String prenom = sc.nextLine();
 		try (Connection connection = DriverManager.getConnection(url, login, password)) {
 			String delete = "DELETE FROM entreprise.emp WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
-			String select = "SELECT nom,prenom FROM entreprise.emp WHERE nom = UPPER('" + nom
-					+ "') AND prenom = UPPER('" + prenom + "')";
+			String select = "SELECT nom,prenom FROM entreprise.emp WHERE nom = '" + nom
+					+ "' AND prenom = '" + prenom + "'";
 			try (Statement statement = connection.createStatement()) {
 				ResultSet resulSet = statement.executeQuery(select);
 				while (resulSet.next()) {
