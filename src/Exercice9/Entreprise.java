@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -315,10 +316,12 @@ public class Entreprise extends Main {
                     statement.executeUpdate(changeSup);
 					break;
 				case 6:
-
+                    String changeDE = modif.modifierDateEmbauche(nom, prenom, "embauche");
+                    statement.executeUpdate(changeDE);
 					break;
 				case 7:
-
+					String changeSalaire= modif.modifierSalaire(nom, prenom, "sal");
+                    statement.executeUpdate(changeSalaire);
 					break;
 				case 8:
 					String changeComm = modif.modifierNoempSupCommNoserv(nom, prenom, "comm");
@@ -339,7 +342,11 @@ public class Entreprise extends Main {
 		} catch (SQLException e1) {
 			System.out.println("Connexion non établie");
 		} catch (InputMismatchException e) {
-			System.out.println("Rentrez un chiffre entre 1 et 9 !");
+			System.out.println("Mauvaise saisie !");
+		}catch(DateTimeParseException e){
+			System.out.println("--------ERREUR---------------------------------------------");
+			System.out.println("La date saisie est invalide");
+			System.out.println("--------ERREUR--------------------------------------------");
 		}
 
 	}

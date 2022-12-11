@@ -1,5 +1,7 @@
 package Exercice9;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -54,7 +56,7 @@ public class ModifierEmploye {
          */
         public String modifierNoempSupCommNoserv(final String nom , final String prenom, final String up){
      	   Scanner sc = new Scanner(System.in);
-     	   System.out.println("Modification " + up + " :" );
+     	   System.out.print("Modification " + up + " :" );
      	   int changeInt = sc.nextInt();
      	   String change ="UPDATE entreprise.emp\n"
      	   		+ "SET " + up + " = " + changeInt + " WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
@@ -71,10 +73,27 @@ public class ModifierEmploye {
          */
         public String modifierDateEmbauche(final String nom , final String prenom, final String up){
       	   Scanner sc = new Scanner(System.in);
-      	   System.out.println("Modification " + up + " :" );
-      	   int changeInt = sc.nextInt();
+      	   System.out.print("Modification " + up + " (date : AAAA-MM-JJ ) :" );
+      	   String changeDate = sc.nextLine();
+      	 if (changeDate.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
+				LocalDate.parse(changeDate, DateTimeFormatter.ISO_DATE);
+			} else {
+				System.out.println("--------ERREUR---------------------------------------------");
+				System.out.println("La date saisie est invalide");
+				System.out.println("--------ERREUR--------------------------------------------");
+			}
       	   String change ="UPDATE entreprise.emp\n"
-      	   		+ "SET " + up + " = " + changeInt + " WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
+      	   		+ "SET " + up + " = '" + changeDate + "' WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
+      	   return change;
+      	   
+         }
+        
+        public String modifierSalaire(final String nom , final String prenom, final String up){
+      	   Scanner sc = new Scanner(System.in);
+      	   System.out.print("Modification " + up + " :" );
+      	   double changeDouble = sc.nextDouble();
+      	   String change ="UPDATE entreprise.emp\n"
+      	   		+ "SET " + up + " = " + changeDouble + " WHERE nom = '" + nom + "' AND prenom = '" + prenom + "';";
       	   return change;
       	   
          }
