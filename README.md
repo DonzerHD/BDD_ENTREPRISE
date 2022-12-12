@@ -21,7 +21,7 @@ EXERCICE 7
 Afficher à l’écran la liste des employés dont le nom contient une chaîne de caractères saisie par l’utilisateur
 EXERCICE 8
 Afficher à l’écran les noms, emploi, salaire, numéro de service de tous les employés du service saisi par
-l’utilisateur et qui gagnent plus d’un salaire saisi par l’utilisateur
+l’utilisateur et qui gagnent plus d’un salaire saisi par l’utilisateur .
 EXERCICE 9
 Créer un menu (Console Java) permettant de :
 - Afficher la liste des employés
