@@ -3,7 +3,7 @@
 Utilisation sur des petites requêtes les connexions à la base de données depuis Java
 
 # CONTEXTE
-## REQUETE AVEC DES STATEMENTS
+## REQUETE AVEC DES STATEMENTS
 EXERCICE 1
 Connecter la base de données créée en Java
 EXERCICE 2
