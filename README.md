@@ -4,25 +4,25 @@ Utilisation sur des petites requêtes les connexions à la base de données depu
 
 # CONTEXTE
 ## REQUETE AVEC DES STATEMENTS
- EXERCICE 1
+#### EXERCICE 1
  Connecter la base de données créée en Java
-EXERCICE 2                 
+#### EXERCICE 2                 
 Afficher à l’écran la liste des employés
-EXERCICE 3
+#### EXERCICE 3
 Afficher à l’écran la liste des employés du service 5
-EXERCICE 4
+#### EXERCICE 4
 Afficher à l’écran la liste des employés du service INFORMATIQUE
-EXERCICE 5
+#### EXERCICE 5
 Afficher à l’écran la liste des employés dont le nom est saisi par l’utilisateur
-EXERCICE 6
+#### EXERCICE 6
 Afficher à l’écran la liste des employés dont la date d’embauche est comprise dans l’année saisie par
 l’utilisateur
-EXERCICE 7
+#### EXERCICE 7
 Afficher à l’écran la liste des employés dont le nom contient une chaîne de caractères saisie par l’utilisateur
-EXERCICE 8
+#### EXERCICE 8
 Afficher à l’écran les noms, emploi, salaire, numéro de service de tous les employés du service saisi par
 l’utilisateur et qui gagnent plus d’un salaire saisi par l’utilisateur .
-EXERCICE 9
+#### EXERCICE 9
 Créer un menu (Console Java) permettant de :
 - Afficher la liste des employés
 - Afficher le détail d’un employé
