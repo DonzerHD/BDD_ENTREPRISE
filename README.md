@@ -4,9 +4,9 @@ Utilisation sur des petites requêtes les connexions à la base de données depu
 
 # CONTEXTE
 ## REQUETE AVEC DES STATEMENTS
-EXERCICE 1
-Connecter la base de données créée en Java
-EXERCICE 2
+ EXERCICE 1
+ Connecter la base de données créée en Java
+EXERCICE 2                 
 Afficher à l’écran la liste des employés
 EXERCICE 3
 Afficher à l’écran la liste des employés du service 5
